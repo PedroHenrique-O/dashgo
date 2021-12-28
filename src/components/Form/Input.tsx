@@ -14,7 +14,7 @@ export function Input({ name, label, ...rest }: InputProps) {
   return (
     <FormControl>
       {!!label && <FormLabel htmlFor={name}> {label} </FormLabel>}
-      Email
+
       <ChakraInput
         focusBorderColor="pink.500"
         bgColor="gray.900"
