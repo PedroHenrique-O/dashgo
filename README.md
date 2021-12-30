@@ -7,13 +7,14 @@
 <li> MirageJs</li>
 <li> React Query</li>
 <li> Yup</li>
+<li> Chakra UI</li>
 <li> Hook Forms </li>
 
 <h1>About the application: </h1>
 
 <p>
 
-Dashgo é uma plataforma de controle de usuários.
+Dashgo é uma plataforma de controle de usuários, estilizado com o Chakra UI.
 Os formulários são validados utilizando o hook forms + yup. Toda a listagem de usuários e feita em cache com o react query, e o servidor e mockado com o MirageJs.
 
 </p>
