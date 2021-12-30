@@ -1,6 +1,6 @@
 ![dashgo](https://user-images.githubusercontent.com/55575751/147762939-af71796f-4dba-4c6f-b302-265e52ee1997.gif)
 
-<h1> Tecnologias usadas: </h1>
+<h1> Technologies: </h1>
 
 <li> Next JS </li>
 <li> Typescript </li>
