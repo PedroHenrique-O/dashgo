@@ -14,7 +14,7 @@
 <p>
 
 Dashgo é uma plataforma de controle de usuários.
-Os formulários são validados utilizando o hook forms + yup. Toda a listagem de usuários e feita em cache com o react query. E o servidor e mockado com o MirageJs.
+Os formulários são validados utilizando o hook forms + yup. Toda a listagem de usuários e feita em cache com o react query, e o servidor e mockado com o MirageJs.
 
 </p>
 
