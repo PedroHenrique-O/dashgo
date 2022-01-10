@@ -53,13 +53,12 @@ export function makeServer() {
         const pageStart = (Number(page) - 1) * Number(users_per_page);
         const pageEnd = pageStart + Number(users_per_page);
 
-        const users = this.serialize(schema.all("user")).user.slice(
+        const users = this.serialize(schema.all("user")).users.slice(
           pageStart,
           pageEnd
         );
 
         // const users = schema.all("user");
-
         return new Response(200, { "x-total-count": String(total) }, { users });
       });
 
