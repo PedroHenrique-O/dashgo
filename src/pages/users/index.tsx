@@ -14,17 +14,20 @@ import {
   Tr,
   useBreakpointValue,
   Spinner,
+  Link,
 } from "@chakra-ui/react";
 import { RiAddLine, RiEdit2Line } from "react-icons/ri";
 import Pagination from "../../components/Pagination";
 import { Header } from "../../components/Header";
 import Sidebar from "../../components/Sidebar";
-import Link from "next/link";
+import NextLink from "next/link";
 
 import { useQuery } from "react-query";
 import { api } from "../../services/api";
-import { useUsers } from "../../services/hook/useUsers";
-import { useState } from "react";
+import { getUsers, useUsers } from "../../services/hook/useUsers";
+import { useEffect, useState } from "react";
+import { queryClient } from "../../services/queryClient";
+import { GetServerSideProps } from "next";
 
 interface UsersType {
   name: string;
@@ -35,12 +38,42 @@ interface UsersType {
 
 export default function Users() {
   const [page, setPage] = useState(1);
-  const { data, isLoading, error, isFetching } = useUsers(page);
+  const { data, isLoading, error, isFetching } = useUsers(
+    page
+
+    //   , {
+    //   initialData: users,
+    // }
+  );
+  console.log("mudando? :", page);
+
+  // useEffect(() => {
+  //   const getTest = async () => {
+  //     const response = await api.get("/api/users");
+  //     const data = await response.data;
+  //     console.log(data);
+  //   };
+
+  //   getTest();
+  // }, []);
 
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
   });
+
+  const handlePrefetchUser = async (userId: string | undefined) => {
+    await queryClient.prefetchInfiniteQuery(
+      ["user", userId],
+      async () => {
+        const response = await api.get(`users/${userId}`);
+
+        return response.data;
+      },
+
+      { staleTime: 1000 * 60 * 10 }
+    );
+  };
 
   return (
     <Box>
@@ -57,7 +90,7 @@ export default function Users() {
               )}
             </Heading>
 
-            <Link href="/users/create" passHref>
+            <NextLink href="/users/create" passHref>
               <Button
                 as="a"
                 size="sm"
@@ -67,7 +100,7 @@ export default function Users() {
               >
                 Criar novo
               </Button>
-            </Link>
+            </NextLink>
           </Flex>
 
           {isLoading ? (
@@ -93,7 +126,7 @@ export default function Users() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data?.users.map((user) => {
+                  {data!.users.map((user) => {
                     return (
                       <Tr key={user.id}>
                         <Td px={["4", "4", "6"]} color="gray.300" width="8">
@@ -101,7 +134,12 @@ export default function Users() {
                         </Td>
                         <Td>
                           <Box>
-                            <Text fontWeight="bold">{user.name}</Text>
+                            <Link
+                              color="purple.400"
+                              onMouseEnter={() => handlePrefetchUser(user.id)}
+                            >
+                              <Text fontWeight="bold">{user.name}</Text>
+                            </Link>
                             <Text fontSize="sm" color="gray.300">
                               {user.email}
                             </Text>
@@ -136,3 +174,12 @@ export default function Users() {
     </Box>
   );
 }
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const { users, totalCount } = await getUsers(1);
+
+//   return {
+//     props: {
+//       users,
+//     },
+//   };
+// };
